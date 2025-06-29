@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+{% extends 'base.html' %}
+{% block content %}
+  <h2>{{ question.title }}</h2>
+  <p>{{ question.body }}</p>
+  <p class="text-muted">Asked by {{ question.author.username }} on {{ question.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+  <div>
+    {% for tag in question.tags %}
+      <span class="badge bg-info text-dark">{{ tag.name }}</span>
+    {% endfor %}
+  </div>
+
+  <hr>
+  <h4>Answers</h4>
+  {% for ans in question.answers %}
+    <div class="card mb-2">
+      <div class="card-body">
+        {{ ans.body }}
+        <div class="text-muted small mt-2">by {{ ans.author.username }}</div>
+      </div>
+    </div>
+  {% else %}
+    <p>No answers yet.</p>
+  {% endfor %}
+
+  {% if current_user %}
+    <hr>
+    <h5>Your Answer</h5>
+    <form method="POST">
+      <div class="mb-3">
+        <textarea class="form-control" name="body" rows="4" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit Answer</button>
+    </form>
+  {% else %}
+    <p><a href="/login">Log in</a> to post an answer.</p>
+  {% endif %}
+{% endblock %}
+
+</body>
+</html>
